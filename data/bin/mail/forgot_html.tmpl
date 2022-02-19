@@ -1,0 +1,70 @@
+<div style=
+  "font-family: 'Roboto', sans-serif;
+  color: #555;
+  font-weight: 50;
+  background-color: #eee;
+  padding: 10px 50px;
+  max-width: 600px;"
+>
+  <img src="https://s3-us-west-2.amazonaws.com/go-api-assets/static/email/header.png">
+  <div style=
+    "background-color: white;
+    margin-top: -5px;
+    padding: 20px 60px 80px 60px;
+    box-sizing: border-box;"
+  >
+
+    <p style="font-size: 22px;">
+      Hi {{ index . `first_name` }},
+    </p>
+
+    <p>
+      Looks like you have forgotten your password.
+    </p>
+    <p>
+      Click below to reset it!
+    </p>
+    <a
+      href="{{ index . `reset_url` }}"
+      target="_blank"
+      style=
+        "display: block;
+        text-decoration: none;
+        user-select: none;
+        color: white;
+        font-weight: 100;
+        margin: 40px auto 0 auto;
+        background-color: #6090bc;
+        background-size: cover;
+        height: 57px;
+        width: 303px;"
+    >
+      <div style=
+        "text-transform: uppercase;
+        color: white;
+        font-size: 16px;
+        padding-top: 20px;
+        text-align: center;"
+      >
+        Reset Password
+      </div>
+    </a>
+
+ </div>
+
+  <div style=
+   "background-color: #6090bc;
+   padding: 30px 0px;
+   color: white;
+   text-align: center;
+   font-size: 12px;
+   font-weight: 100;"
+ >
+   <p>
+     This email was sent by: Go App
+   </p>
+   <br>
+
+ </div>
+
+</div>

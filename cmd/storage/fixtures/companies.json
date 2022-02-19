@@ -1,0 +1,18 @@
+{
+  "data": [
+    {
+      "attributes": {
+        "name": "Mega Corp",
+        "slug": "megacorp"
+      },
+      "type": "company"
+    },
+    {
+      "attributes": {
+        "name": "Mini Corp",
+        "slug": "minicorp"
+      },
+      "type": "company"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "first_name": "Billy",
+    "last_name": "Bob",
+    "email": "user1@example.com",
+    "password": "goapi123",
+    "roles": [],
+    "company_id": 1
+  },
+  {
+    "first_name": "John",
+    "last_name": "Smith",
+    "email": "user2@example.com",
+    "password": "goapi123",
+    "roles": []
+  },
+  {
+    "first_name": "Ashot",
+    "last_name": "Adminsky",
+    "email": "admin@example.com",
+    "password": "goapi123",
+    "roles": ["admin"]
+  }
+]

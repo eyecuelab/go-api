@@ -1,0 +1,14 @@
+*.test
+*.out
+*.log
+
+.DS_Store
+
+*.env
+*.env.test
+
+go-api
+tmp
+
+dbconfig.yml
+config/.aws/credentials

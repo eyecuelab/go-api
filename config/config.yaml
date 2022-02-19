@@ -1,0 +1,10 @@
+email_domain: "go-api-dev.eyecue.io"
+from_email_name: Go API
+from_email_address: go-api@eyecue.io
+skipjwt:
+  get: \/(health|config|version|anon|$)
+  post: \/(login|register|forgot_password|reset_password|anon)
+  patch: \/(anon)
+  delete: \/(anon)
+reset_expires: 24 # Hours
+max_concurrent_requests: 500

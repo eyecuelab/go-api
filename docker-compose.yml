@@ -1,0 +1,86 @@
+version: "3.9"
+services:
+  api:
+    build:
+      dockerfile: Dockerfile.api
+      context: .
+      target: dev
+    environment:
+      API_MODE: "api"
+      APP_VERSION: "0.0.1"
+      DATABASE_URL: postgres://local-dev@db/go_api_dev?sslmode=disable
+      AWS_CONFIG_FILE: /home/.aws/config
+      AWS_SHARED_CREDENTIALS_FILE: /home/.aws/credentials
+    # command: go run main.go api --port=8000
+    volumes:
+      - ./config/.aws/:/home/.aws:ro
+      - .:/app
+    ports:
+      - 8000:8000
+    links:
+      - db
+  admin:
+    build:
+      dockerfile: Dockerfile.admin
+      context: .
+      target: dev
+    environment:
+      API_MODE: "admin"
+      APP_VERSION: "0.0.1"
+      DATABASE_URL: postgres://local-dev@db/go_api_dev?sslmode=disable
+      AWS_CONFIG_FILE: /home/.aws/config
+      AWS_SHARED_CREDENTIALS_FILE: /home/.aws/credentials
+    volumes:
+      - ./config/.aws/:/home/.aws:ro
+      - .:/app
+    ports:
+      - 8010:8010
+    links:
+      - db
+  test:
+    build:
+      dockerfile: Dockerfile.api
+      context: .
+      target: dev
+    environment:
+      API_MODE: "test"
+      APP_VERSION: "0.0.1"
+      DATABASE_URL: postgres://local-dev@db_test/go_api_test?sslmode=disable
+      AWS_CONFIG_FILE: /home/.aws/config
+      AWS_SHARED_CREDENTIALS_FILE: /home/.aws/credentials
+    volumes:
+      - ./config/.aws/:/home/.aws:ro
+      - .:/app
+    ports:
+      - 8020:8020
+    links:
+      - db_test
+  db_test:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_DB: go_api_test
+      POSTGRES_USER: local-dev
+      POSTGRES_HOST_AUTH_METHOD: trust
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: go_api_dev
+      POSTGRES_USER: local-dev
+      POSTGRES_HOST_AUTH_METHOD: trust
+  migrate: &basemigrate
+    profiles: ["tools"]
+    image: migrate/migrate
+    entrypoint: "migrate -database postgresql://local-dev@db/go_api_dev?sslmode=disable -path /tmp/migrations"
+    command: up
+    links:
+      - db
+    volumes:
+      - ./data/migrations:/tmp/migrations
+  create-migration:
+    <<: *basemigrate
+    entrypoint: migrate create -dir /tmp/migrations -ext sql
+    command: ""
+volumes:
+  data:
