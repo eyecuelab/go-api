@@ -3,16 +3,16 @@ package cron
 import (
 	"log"
 
-	"github.com/eyecuelab/go-api/internal/models"
 	"github.com/eyecuelab/kit/db/psql"
 )
 
-func processNotificationEmail(user *models.User) {
+func processSomethingExample() {
+	wg.Add(1)
 	defer wg.Done()
 	// if err := notifications.SomethingSomething(user); err != nil {
 	// 	log.Fatalf("Error: %+v\n\n", err)
 	// }
-	if err := psql.DB.Exec("update something set something_at = now() where id = ?", user.ID).Error; err != nil {
+	if err := psql.DB.Exec("update users set updated_at = now()").Error; err != nil {
 		log.Fatalf("Error: %+v\n\n", err)
 	}
 }

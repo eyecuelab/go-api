@@ -22,6 +22,6 @@ func Init() {
 }
 
 func cronCmd(cmd *cobra.Command, args []string) {
-	// processNotificationEmail(user)
+	processSomethingExample()
 	wg.Wait()
 }

@@ -37,6 +37,23 @@ services:
       - 8010:8010
     links:
       - db
+  cron:
+    build:
+      dockerfile: Dockerfile.api
+      context: .
+      target: dev
+    environment:
+      API_MODE: "api"
+      APP_VERSION: "0.0.1"
+      DATABASE_URL: postgres://local-dev@db/go_api_dev?sslmode=disable
+      AWS_CONFIG_FILE: /home/.aws/config
+      AWS_SHARED_CREDENTIALS_FILE: /home/.aws/credentials
+    command: go run main.go cron
+    volumes:
+      - ./config/.aws/:/home/.aws:ro
+      - .:/app
+    links:
+      - db
   test:
     build:
       dockerfile: Dockerfile.api
