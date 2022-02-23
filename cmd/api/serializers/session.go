@@ -8,7 +8,8 @@ import (
 
 // AnonSession anon session data
 type AnonSession struct {
-	ID string `jsonapi:"primary,session"`
+	ID             string `jsonapi:"primary,session"`
+	SomethingExtra string `jsonapi:"attr,something_extra"`
 }
 
 func sessionLinks() jsonapi.Links {
@@ -44,8 +45,9 @@ func (sess AnonSession) JSONAPIMeta() *jsonapi.Meta {
 
 // AuthSession authenticated user session data
 type AuthSession struct {
-	ID   string       `jsonapi:"primary,session"`
-	User *models.User `jsonapi:"relation,user"`
+	ID             string       `jsonapi:"primary,session"`
+	SomethingExtra string       `jsonapi:"attr,something_extra"`
+	User           *models.User `jsonapi:"relation,user"`
 }
 
 // JSONAPILinks links for the session json

@@ -17,15 +17,14 @@ import (
 // GetSession session data endpoint
 func GetSession(c middleware.AuthedContext) error {
 	var sess interface{}
-	// googleAPIKey := viper.GetString("google_api_key")
 	if c.LoggedIn() {
 		sess = &serializers.AuthSession{
-			User: c.User(),
-			// GoogleAPIKey: googleAPIKey,
+			User:           c.User(),
+			SomethingExtra: "abc",
 		}
 	} else {
 		sess = &serializers.AnonSession{
-			// GoogleAPIKey: googleAPIKey,
+			SomethingExtra: "abc",
 		}
 	}
 

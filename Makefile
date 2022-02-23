@@ -22,9 +22,11 @@ dep: # install missing dependencies
 bash: # run bash inside the api container
 	docker compose run --rm api bash
 
+test_api: # run main api integration tests
+	docker compose run --rm test go test ./cmd/api/...
+
 test_models: # run models unit tests
 	docker compose run --rm test go test ./internal/models/...
-
 
 ### Plain (commands to run plain go commands without docker compose)
 
