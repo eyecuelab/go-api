@@ -5,7 +5,7 @@ env: &env
 defaults: &defaults
   working_directory: /home/circleci/go/src/github.com/eyecuelab/go-api
   docker:
-    - image: cimg/go:1.16.14
+    - image: cimg/go:1.17.6
 
 version: 2
 jobs:
@@ -21,7 +21,7 @@ jobs:
   test:
     working_directory: /home/circleci/go/src/github.com/eyecuelab/go-api
     docker:
-      - image: cimg/go:1.16.14
+      - image: cimg/go:1.17.6
       - image: cimg/postgres:13.5-postgis
         environment:
           POSTGRES_USER: postgres
