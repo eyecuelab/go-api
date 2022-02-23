@@ -1,6 +1,7 @@
 package models_test
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -23,7 +24,11 @@ func setup() error {
 	// env.Load("test")
 	//
 	// assets.Manager = &assets.AssetManager{Get: data.Asset, Dir: data.AssetDir}
-	if err := config.Load("test", "/app/config"); err != nil {
+	workingDirPath := os.Getenv("APP_WORKING_DIR")
+	if workingDirPath == "" {
+		workingDirPath = "/app"
+	}
+	if err := config.Load("test", fmt.Sprintf("%s/config", workingDirPath)); err != nil {
 		// if err := config.Load("test", "../../config"); err != nil {
 		return err
 	}
