@@ -52,7 +52,8 @@ func Login(c web.ApiContext) error {
 	}
 	c.Response().Header().Set(echo.HeaderAuthorization, fmt.Sprintf("Bearer %s", token))
 	sess := &serializers.AuthSession{
-		User: authedUser,
+		User:           authedUser,
+		SomethingExtra: "abc",
 	}
 	return c.JsonApiOK(sess)
 }

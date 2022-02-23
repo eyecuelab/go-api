@@ -136,17 +136,6 @@ func users() {
 }
 
 func seedData(t string) []byte {
-	// ex, err := os.Executable()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// exPath := filepath.Dir(ex)
-
-	// gopath := os.Getenv("GOPATH")
-	// if gopath == "" {
-	// 	gopath = build.Default.GOPATH
-	// }
-	// path := fmt.Sprintf("%s/src/github.com/eyecuelab/go-api/cmd/storage/fixtures/%s.json", gopath, t)
 	workingDirPath := os.Getenv("APP_WORKING_DIR")
 	if workingDirPath == "" {
 		workingDirPath = "/app"

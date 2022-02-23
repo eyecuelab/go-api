@@ -14,13 +14,11 @@ import (
 // GetSession admin session data endpoint
 func GetSession(c middleware.AuthedContext) error {
 	var sess interface{}
-	// googleAPIKey := viper.GetString("google_api_key")
 	if c.LoggedIn() && c.User().IsAdmin() {
 		// user := serializers.User{User: *c.User()}
 		sess = &serializers.AuthSession{
 			// User: &user,
 			User: c.User(),
-			// GoogleAPIKey: googleAPIKey,
 		}
 	} else {
 		sess = new(serializers.AnonSession)
@@ -50,12 +48,10 @@ func Login(c web.ApiContext) error {
 	}
 	c.Response().Header().Set(echo.HeaderAuthorization, fmt.Sprintf("Bearer %s", token))
 	// user := serializers.User{User: *authedUser}
-	// googleAPIKey := viper.GetString("google_api_key")
 
 	sess := &serializers.AuthSession{
 		// User: &user,
 		User: authedUser,
-		// GoogleAPIKey: googleAPIKey,
 	}
 	return c.JsonApiOK(sess)
 }

@@ -10,8 +10,12 @@ db_create_migration: # create a new migration file: make db_create_migration fil
 db_migrate: # run db migrations
 	docker compose --profile tools run migrate
 
-seed: # seed database with data
+db_seed: # seed database with data
 	docker compose run --rm api go run main.go storage seed
+
+db_drop:
+	docker compose down --volumes
+	docker volume rm go-api_data
 
 psql_console: # run psql console
 	docker compose exec db psql -U local-dev -d go_api_dev
