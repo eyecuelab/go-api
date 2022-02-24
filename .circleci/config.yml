@@ -1,0 +1,83 @@
+env: &env
+  DATABASE_URL: "postgres://postgres@localhost:5432/go_api_test?sslmode=disable"
+  APP_WORKING_DIR: "/home/circleci/go/src/github.com/eyecuelab/go-api"
+
+defaults: &defaults
+  working_directory: /home/circleci/go/src/github.com/eyecuelab/go-api
+  docker:
+    - image: cimg/go:1.17.6
+
+version: 2
+jobs:
+  checkout:
+    <<: *defaults
+    steps:
+      - checkout
+      - save_cache:
+          key: cache-repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - /home/circleci/go/src/github.com/eyecuelab/go-api
+
+  test:
+    working_directory: /home/circleci/go/src/github.com/eyecuelab/go-api
+    docker:
+      - image: cimg/go:1.17.6
+      - image: cimg/postgres:13.5-postgis
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: go_api_test
+    environment:
+      TEST_RESULTS: /tmp/test-results
+    steps:
+      - restore_cache:
+          key: cache-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - run: mkdir -p $TEST_RESULTS
+      - run:
+          name: Prepare test config
+          command: |
+            cp config/test.env.example config/test.env
+            cp config/api.env.example config/api.env
+      - run:
+          name: Waiting for Postgres to be ready
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Run API integration tests
+          environment:
+            <<: *env
+          command: |
+            go test -v ./cmd/api/...
+      - run:
+          name: Run model tests
+          environment:
+            <<: *env
+          command: go test -v ./internal/models/...
+      - run:
+          name: Start API
+          environment:
+            <<: *env
+          command: go run main.go api --port=8080
+          background: true
+      - run:
+          name: Validate service is working
+          command: |
+            sleep 10
+            curl --retry 10 --retry-delay 1 -X GET http://localhost:8080/version
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - checkout:
+          filters:
+            branches:
+              only:
+                - develop
+                - main
+      - test:
+          requires:
+            - checkout
+          filters:
+            branches:
+              only:
+                - develop
+                - main

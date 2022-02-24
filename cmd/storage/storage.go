@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"reflect"
 
 	"github.com/eyecuelab/go-api/internal/models"
@@ -69,7 +70,11 @@ func Clear() {
 func Migrate() {
 	url := viper.GetString("database_url")
 
-	m, err := migrate.New("file:///app/data/migrations", url)
+	workingDirPath := os.Getenv("APP_WORKING_DIR")
+	if workingDirPath == "" {
+		workingDirPath = "/app"
+	}
+	m, err := migrate.New(fmt.Sprintf("file://%s/data/migrations", workingDirPath), url)
 	if err != nil {
 		log.Fatal("Migrate init error: ", err)
 	}
@@ -131,18 +136,11 @@ func users() {
 }
 
 func seedData(t string) []byte {
-	// ex, err := os.Executable()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// exPath := filepath.Dir(ex)
-
-	// gopath := os.Getenv("GOPATH")
-	// if gopath == "" {
-	// 	gopath = build.Default.GOPATH
-	// }
-	// path := fmt.Sprintf("%s/src/github.com/eyecuelab/go-api/cmd/storage/fixtures/%s.json", gopath, t)
-	path := fmt.Sprintf("/app/cmd/storage/fixtures/%s.json", t)
+	workingDirPath := os.Getenv("APP_WORKING_DIR")
+	if workingDirPath == "" {
+		workingDirPath = "/app"
+	}
+	path := fmt.Sprintf("%s/cmd/storage/fixtures/%s.json", workingDirPath, t)
 	raw, err := ioutil.ReadFile(path)
 	if err != nil {
 		fmt.Printf("Error: %+v\n\n", err)

@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"github.com/eyecuelab/kit/brake"
+
 	"github.com/eyecuelab/go-api/cmd/middleware"
 	"github.com/eyecuelab/kit/db/psql"
 )
@@ -22,6 +24,7 @@ func UpdateUserProfile(c middleware.AuthedContext) error {
 
 	permittedAttrs := c.Attrs("first_name", "last_name")
 	if err := psql.DB.Model(&user).Updates(permittedAttrs).Error; err != nil {
+		brake.Notify(err, nil, brake.SeverityCritical)
 		return err
 	}
 

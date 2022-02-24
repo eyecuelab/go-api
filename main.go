@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/eyecuelab/go-api/cmd"
-	// "github.com/eyecuelab/go-api/cmd/env"
 )
 
 func main() {
@@ -10,6 +9,5 @@ func main() {
 }
 
 func init() {
-	// env.Load(os.Getenv("ENV"))
 	cmd.Init()
 }

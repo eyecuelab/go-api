@@ -53,8 +53,11 @@ func initCobra() error {
 		// initEmail
 	)
 
-	// err := cmd.Init("test", nil)
-	err := config.Load("test", "/app/config")
+	workingDirPath := os.Getenv("APP_WORKING_DIR")
+	if workingDirPath == "" {
+		workingDirPath = "/app"
+	}
+	err := config.Load("test", fmt.Sprintf("%s/config", workingDirPath))
 	if err != nil {
 		return err
 	}

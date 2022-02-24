@@ -10,5 +10,4 @@
 go-api
 tmp
 
-dbconfig.yml
 config/.aws/credentials

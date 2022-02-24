@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/eyecuelab/kit/brake"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/eyecuelab/kit/db/psql"
 	"github.com/eyecuelab/kit/functools"
@@ -97,6 +99,7 @@ func (u *User) RegisterWithPassword() error {
 
 	if err := tx.Exec(insertPasswordSQL, u.ID, u.Password).Error; err != nil {
 		tx.Rollback()
+		brake.Notify(err, nil, brake.SeverityCritical)
 		return err
 	}
 

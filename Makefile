@@ -1,7 +1,7 @@
 api: # start main api
 	docker compose up api
 
-admin: # strt admin api
+admin: # start admin api
 	docker compose up admin
 
 db_create_migration: # create a new migration file: make db_create_migration file=create_users
@@ -10,8 +10,12 @@ db_create_migration: # create a new migration file: make db_create_migration fil
 db_migrate: # run db migrations
 	docker compose --profile tools run migrate
 
-seed: # seed database with data
+db_seed: # seed database with data
 	docker compose run --rm api go run main.go storage seed
+
+db_drop:
+	docker compose down --volumes
+	docker volume rm go-api_data
 
 psql_console: # run psql console
 	docker compose exec db psql -U local-dev -d go_api_dev
@@ -27,6 +31,9 @@ test_api: # run main api integration tests
 
 test_models: # run models unit tests
 	docker compose run --rm test go test ./internal/models/...
+
+cron: # run cron jobs
+	docker compose up cron
 
 ### Plain (commands to run plain go commands without docker compose)
 
@@ -58,6 +65,3 @@ compose_build:
 
 compose_air_init:
 	docker compose run --rm api air init
-
-cron:
-	go run main.go cron
